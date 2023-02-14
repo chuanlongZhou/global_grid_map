@@ -1,6 +1,5 @@
 streamlit_folium
 pandas
 geopandas
-base64
 folium
 shapely

@@ -53,9 +53,9 @@ def display(gdf, image_path):
     
     # create a geojson layer for each feature
     for i, r in gdf.iterrows():
-        print(i)
+        # print(i)
         my_bar.progress((i + 1)/len(gdf), text=progress_text)
-        if i>100:
+        if i>500:
             break
         # geodataframe of row
         gdf_ = geopandas.GeoDataFrame(r.to_frame().T, crs=gdf.crs)

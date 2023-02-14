@@ -50,11 +50,11 @@ bottom: 0;
 width: 100%;
 background-color: white;
 color: black;
-text-align: right;
+text-align: left;
 }
 </style>
 <div class="footer">
-<p>Website developed with ❤ by <a href="https://defve1988.github.io/" target="_blank"> Chuanlong Zhou</a> @ LSCE &nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; Website developed with ❤ by <a href="https://defve1988.github.io/" target="_blank"> Chuanlong Zhou</a> @ LSCE</p>
 <p> </p>
 </div>
 """

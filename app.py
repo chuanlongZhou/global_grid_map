@@ -23,8 +23,8 @@ def init_state(state):
 
     
 st.set_page_config(layout="wide",
-                   page_title='Biomass', page_icon = '🥑')
-st.title('🥑Biomass recovery after fire - Yidi Xu@LSCE')
+                   page_title='Biomass', page_icon = 'evergreen_tree')
+st.title(':evergreen_tree: Biomass recovery after fire - Yidi Xu@LSCE')
 state = st.session_state
 init_state(state)
 

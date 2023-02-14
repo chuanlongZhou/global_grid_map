@@ -55,8 +55,8 @@ def display(gdf, image_path):
     for i, r in gdf.iterrows():
         print(i)
         my_bar.progress((i + 1)/len(gdf), text=progress_text)
-        # if i>10:
-        #     break
+        if i>100:
+            break
         # geodataframe of row
         gdf_ = geopandas.GeoDataFrame(r.to_frame().T, crs=gdf.crs)
         

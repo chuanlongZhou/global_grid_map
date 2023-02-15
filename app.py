@@ -13,8 +13,8 @@ CSV_PATH = "bm20_data3_0pass1_freq0_big1_pa100_t122_eq1_lc0.csv"
 
 def init_state(state):
     if "map" not in state:
-        image_path= "small"
-        csv_path="bm18_data3_0pass1_freq0_big1_pa100_t12_eq1_lc1.csv"
+        image_path= IMAGE_PATH
+        csv_path=CSV_PATH
         files = os.listdir(image_path)
         rdf = pd.read_csv(csv_path, header=None)
 

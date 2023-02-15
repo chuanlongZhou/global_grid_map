@@ -33,7 +33,7 @@ def get_gdf(rdf, files):
         lon.append(lo)
         R2.append(r2)
         RT.append(rt)
-        geometry.append(create_polygon(((la,lo),(la-1, lo-1))))
+        geometry.append(create_polygon(((la,lo+1),(la-1, lo))))
         file.append(None if len(f)==0 else files[f[0]])
         
     d = {'lat': lat, 'lon': lon, "r2":R2, "recovery time":RT, "file":file, "geometry": geometry}

@@ -10,6 +10,7 @@ CSV_PATH = "bm18_data3_0pass1_freq0_big1_pa100_t12_eq1_lc1.csv"
 
 IMAGE_PATH = "small_DEA"
 CSV_PATH = "bm20_data3_0pass1_freq0_big1_pa100_t122_eq1_lc0.csv"
+CSV_PATH = "bm20_data3_0pass1_freq0_big1_pa100_t122_eq2_lc0.csv"
 
 def init_state(state):
     if "map" not in state:

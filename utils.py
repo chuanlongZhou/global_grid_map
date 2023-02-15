@@ -24,6 +24,7 @@ def get_gdf(rdf, files):
     geometry =[]
     file =[]
     RT = []
+    added =[]
     for index, row in rdf.iterrows():
         la, lo, r2, rt = int(row[1]), int(row[2]), row[4], row[15]
         if rt>100:
@@ -35,6 +36,20 @@ def get_gdf(rdf, files):
         RT.append(rt)
         geometry.append(create_polygon(((la,lo+1),(la-1, lo))))
         file.append(None if len(f)==0 else files[f[0]])
+        added.append(files[f[0]])
+        
+
+    for ff in files:
+        if ff not in added:
+            la = int(ff.split("_")[0])
+            lo = int(ff.split("_")[1])
+            f = [files.index(l) for l in files if l.startswith(f"{la}_{lo}")]
+            lat.append(la)
+            lon.append(lo)
+            R2.append(None)
+            RT.append(None)
+            geometry.append(create_polygon(((la,lo+1),(la-1, lo))))
+            file.append(None if len(f)==0 else files[f[0]])
         
     d = {'lat': lat, 'lon': lon, "r2":R2, "recovery time":RT, "file":file, "geometry": geometry}
     gdf = geopandas.GeoDataFrame(d, crs='epsg:4326')

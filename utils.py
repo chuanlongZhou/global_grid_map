@@ -7,6 +7,7 @@ import streamlit as st
 from folium import IFrame
 import os
 
+
 def create_polygon(box):
     """create box polygon for clipping the geopands df
     """
@@ -17,7 +18,7 @@ def create_polygon(box):
                     (max_lon, max_lat), 
                     (min_lon, max_lat)])
     
-def get_gdf(rdf, files):
+def get_gdf(rdf, files, image_path=""):
     lat =[]
     lon =[]
     R2 =[]
@@ -30,13 +31,18 @@ def get_gdf(rdf, files):
         if rt>100:
             rt=100
         f = [files.index(l) for l in files if l.startswith(f"{la}_{lo}")]
+        
         lat.append(la)
         lon.append(lo)
         R2.append(r2)
         RT.append(rt)
         geometry.append(create_polygon(((la,lo+1),(la-1, lo))))
-        file.append(None if len(f)==0 else files[f[0]])
-        added.append(files[f[0]])
+        
+        f_temp = None if len(f)==0 else files[f[0]]
+        f_temp = None if f_temp is None else os.path.join(image_path, f_temp)
+        file.append(f_temp)
+        if f_temp is not None:
+            added.append(files[f[0]])
         
 
     for ff in files:
@@ -49,27 +55,31 @@ def get_gdf(rdf, files):
             R2.append(None)
             RT.append(None)
             geometry.append(create_polygon(((la,lo+1),(la-1, lo))))
-            file.append(None if len(f)==0 else files[f[0]])
+            f_temp = None if len(f)==0 else files[f[0]]
+            f_temp = None if f_temp is None else os.path.join(image_path, f_temp)
+            file.append(f_temp)
         
     d = {'lat': lat, 'lon': lon, "r2":R2, "recovery time":RT, "file":file, "geometry": geometry}
     gdf = geopandas.GeoDataFrame(d, crs='epsg:4326')
     return gdf
 
 
-def display(gdf, image_path):
+def display(gdf, progressbar=False):
     # color_map = MplColorHelper("autumn_r",0,1)
     # m = folium.Map()
     m = gdf.explore(name="r2", column="r2", cmap="Reds",style_kwds={"weight":0.5})
     gdf.explore(name="recovery time", column="recovery time", cmap="YlGn",style_kwds={"weight":0.5}, m=m)
 
     fg = folium.FeatureGroup(name="plots", show=True)
-    progress_text = "Loading images. Please wait."
-    my_bar = st.progress(0, text=progress_text)
+    if progressbar:
+        progress_text = "Loading images. Please wait."
+        my_bar = st.progress(0, text=progress_text)
     
     # create a geojson layer for each feature
     for i, r in gdf.iterrows():
         # print(i)
-        my_bar.progress((i + 1)/len(gdf), text=progress_text)
+        if progressbar:
+            my_bar.progress((i + 1)/len(gdf), text=progress_text)
 
         # if i%3!=0 or r["file"] is None:
         #     continue
@@ -79,7 +89,7 @@ def display(gdf, image_path):
         scr = ""
         opacity=0
         if r["file"] is not None:
-            f_path = os.path.join(image_path, r["file"])
+            f_path = r["file"]
             encoded = base64.b64encode(open(f_path, 'rb').read())
             scr = "data:image/png;base64," + encoded.decode("utf-8")
         # URI encoded image of plotly figure
@@ -106,5 +116,6 @@ def display(gdf, image_path):
 
     fg.add_to(m)
     folium.LayerControl().add_to(m)
-    my_bar.empty()
+    if progressbar:
+        my_bar.empty()
     return m

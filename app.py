@@ -20,8 +20,8 @@ def init_state(state):
         rdf = pd.read_csv(csv_path, header=None)
 
         rdf = rdf[(rdf[0]==4)&(rdf[4]>0)]
-        gdf = get_gdf(rdf, files)
-        m = display(gdf, image_path)
+        gdf = get_gdf(rdf, files, image_path)
+        m = display(gdf)
         state.map = m
         folium_static(state.map, width=1200, height=800)
         
